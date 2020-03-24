@@ -31,5 +31,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_SAT_STEP 8
 #define RGBLIGHT_VAL_STEP 8
 
+#define LEADER_TIMEOUT 250
+#define LEADER_PER_KEY_TIMING
+
 #define GRAVE_ESC_ALT_OVERRIDE // send escape if alt is pressed
 #define GRAVE_ESC_GUI_OVERRIDE // send escape if gui is pressed
+
+#define BOOTMAGIC_KEY_SALT KC_LSFT
+
+#define NO_DEBUG
+#define NO_PRINT
+#define NO_ACTION_ONESHOT
+#define NO_ACTION_MACRO

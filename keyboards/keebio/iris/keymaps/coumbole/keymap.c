@@ -14,17 +14,18 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
+
   [_QWERTY] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_GESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                               KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
+ LALT_T(KC_TAB), KC_Q, KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+     KC_LSFT, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, RSFT_T(KC_QUOT),
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MINS,          KC_EQUAL, KC_N,    KC_M,   KC_COMMA, KC_DOT, KC_SLASH, KC_BSLS,
+     KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,     ADJUST,          KC_LEAD, KC_N,    KC_M,   KC_COMMA, KC_DOT, KC_SLASH, KC_BSLS,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     LOWER,  KC_LGUI,  KC_SPC,                    KC_ENT,  RAISE,  KC_RALT
+                                    KC_MINS, KC_LGUI,LT(_LOWER, KC_SPC), LT(_RAISE,KC_ENT),KC_ALGR,KC_EQUAL
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
   
@@ -109,4 +110,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
   }
   return true;
+}
+
+void matrix_init_user(void) {
+	set_unicode_input_mode(UC_LNX);
+}
+
+LEADER_EXTERNS();
+
+void matrix_scan_user(void) {
+  LEADER_DICTIONARY() {
+    leading = false;
+    leader_end();
+
+    SEQ_ONE_KEY(KC_A) {
+      SEND_STRING("git add");
+    }
+    SEQ_ONE_KEY(KC_S) {
+      SEND_STRING("git status");
+    }
+    SEQ_ONE_KEY(KC_D) {
+      SEND_STRING("git diff");
+    }
+    SEQ_ONE_KEY(KC_F) {
+      SEND_STRING("git fetch");
+    }
+    SEQ_THREE_KEYS(KC_D, KC_I, KC_S) {
+      // ಠ__ಠ
+      send_unicode_hex_string("0CA0 005F 005F 0CA0");
+    }
+		SEQ_FIVE_KEYS(KC_S, KC_H, KC_R, KC_U, KC_G) {
+			// ¯\_(ツ)_/¯
+			send_unicode_hex_string("00AF 005C 005F 0028 30C4 0029 005F 002F 00AF");
+		}
+  }
 }
